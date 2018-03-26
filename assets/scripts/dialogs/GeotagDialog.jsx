@@ -9,7 +9,8 @@ import { trackEvent } from '../app/event_tracking'
 import SearchAddress from '../streets/SearchAddress'
 import { getRemixOnFirstEdit } from '../streets/remix'
 import { setMapState } from '../store/actions/map'
-import { addLocation, clearLocation, saveStreetName } from '../store/actions/street'
+import { ADD_LOCATION, CLEAR_LOCATION } from '../store/actions'
+import { updateStreet } from '../store/actions/street'
 import { t } from '../app/locale'
 
 const REVERSE_GEOCODE_API = `https://${PELIAS_HOST_NAME}/v1/reverse`
@@ -38,13 +39,11 @@ class GeotagDialog extends React.Component {
       longitude: PropTypes.number
     }),
     addressInformation: PropTypes.object,
-    addLocation: PropTypes.func,
-    clearLocation: PropTypes.func,
     setMapState: PropTypes.func,
     addressInformationLabel: PropTypes.string,
     street: PropTypes.object,
-    saveStreetName: PropTypes.func,
-    closeDialog: PropTypes.func
+    closeDialog: PropTypes.func,
+    updateStreet: PropTypes.func
   }
 
   constructor (props) {
@@ -195,8 +194,14 @@ class GeotagDialog extends React.Component {
     }
 
     trackEvent('Interaction', 'Geotag dialog: confirm chosen location', null, null, true)
-    this.props.addLocation(location)
-    this.props.saveStreetName(location.hierarchy.street, false)
+    // this.props.addLocation(location)
+    // this.props.saveStreetName(location.hierarchy.street, false)
+    this.props.updateStreet(ADD_LOCATION, {
+      location: location,
+      name: location.hierarchy.street,
+      userUpdated: false
+    })
+
     this.props.closeDialog()
   }
 
@@ -218,7 +223,8 @@ class GeotagDialog extends React.Component {
 
   handleClear = (e) => {
     trackEvent('Interaction', 'Geotag dialog: cleared existing location', null, null, true)
-    this.props.clearLocation()
+    // this.props.clearLocation()
+    this.props.updateStreet(CLEAR_LOCATION)
     this.props.closeDialog()
   }
 
@@ -312,9 +318,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     setMapState: (...args) => { dispatch(setMapState(...args)) },
-    addLocation: (...args) => { dispatch(addLocation(...args)) },
-    clearLocation: () => { dispatch(clearLocation()) },
-    saveStreetName: (...args) => { dispatch(saveStreetName(...args)) }
+    updateStreet: (...args) => { dispatch(updateStreet(...args)) }
   }
 }
 
