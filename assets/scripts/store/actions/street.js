@@ -24,6 +24,27 @@ import {
   SET_BUILDING_VARIANT
 } from './'
 import { t } from '../../app/locale'
+import { saveStreetToServerIfNecessary } from '../../streets/data_model'
+import { updateStreetName } from '../../streets/name'
+
+export function updateStreet (action, parameters) {
+  return function (dispatch, getState) {
+    switch (action) {
+      case CLEAR_LOCATION:
+        dispatch(clearLocation())
+        break
+      case ADD_LOCATION:
+      case SAVE_STREET_NAME:
+        if (action === ADD_LOCATION) {
+          dispatch(addLocation(parameters.location))
+        }
+        dispatch(saveStreetName(parameters.name, parameters.userUpdated, parameters.system))
+        updateStreetName(getState().street)
+        break
+    }
+    saveStreetToServerIfNecessary()
+  }
+}
 
 export function addSegment (index, segment) {
   return {
