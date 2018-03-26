@@ -13,8 +13,9 @@ import { updateStreetName } from './name'
 import { getUndoStack, getUndoPosition, unifyUndoStack } from './undo_stack'
 import { saveStreetToServer, packServerStreetData, setStreetId } from './xhr'
 import store from '../store'
+import { SAVE_STREET_NAME } from '../store/actions'
 import {
-  saveStreetName,
+  updateStreet,
   updateEditCount,
   saveOriginalStreetId
 } from '../store/actions/street'
@@ -113,5 +114,5 @@ export function addRemixSuffixToName () {
     STREET_NAME_REMIX_SUFFIX.length) !== STREET_NAME_REMIX_SUFFIX) {
     street.name += ' ' + STREET_NAME_REMIX_SUFFIX
   }
-  store.dispatch(saveStreetName(street.name, false))
+  store.dispatch(updateStreet(SAVE_STREET_NAME, { name: street.name, userUpdated: false }))
 }

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import StreetName from './StreetName'
 import StreetMeta from './StreetMeta'
-import { saveStreetName } from '../store/actions/street'
+import { SAVE_STREET_NAME } from '../store/actions'
+import { updateStreet } from '../store/actions/street'
 import { t } from '../app/locale'
 
 class StreetNameCanvas extends React.Component {
@@ -11,7 +12,7 @@ class StreetNameCanvas extends React.Component {
     visible: PropTypes.bool,
     editable: PropTypes.bool,
     street: PropTypes.object,
-    saveStreetName: PropTypes.func
+    updateStreet: PropTypes.func
   }
 
   static defaultProps = {
@@ -92,7 +93,7 @@ class StreetNameCanvas extends React.Component {
 
     if (newName) {
       const name = StreetName.normalizeStreetName(newName)
-      this.props.saveStreetName(name, true)
+      this.props.updateStreet(SAVE_STREET_NAME, { name: name, userUpdated: true })
     }
   }
 
@@ -121,7 +122,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    saveStreetName: (...args) => { dispatch(saveStreetName(...args)) }
+    updateStreet: (...args) => { dispatch(updateStreet(...args)) }
   }
 }
 
