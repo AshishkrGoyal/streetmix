@@ -194,14 +194,12 @@ class GeotagDialog extends React.Component {
     }
 
     trackEvent('Interaction', 'Geotag dialog: confirm chosen location', null, null, true)
-    // this.props.addLocation(location)
-    // this.props.saveStreetName(location.hierarchy.street, false)
+
     this.props.updateStreet(ADD_LOCATION, {
       location: location,
       name: location.hierarchy.street,
       userUpdated: false
     })
-
     this.props.closeDialog()
   }
 
@@ -223,7 +221,6 @@ class GeotagDialog extends React.Component {
 
   handleClear = (e) => {
     trackEvent('Interaction', 'Geotag dialog: cleared existing location', null, null, true)
-    // this.props.clearLocation()
     this.props.updateStreet(CLEAR_LOCATION)
     this.props.closeDialog()
   }
