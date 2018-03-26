@@ -15,7 +15,6 @@ import {
   setIgnoreStreetChanges
 } from '../streets/data_model'
 import { updateStreetName } from '../streets/name'
-import { initStreetReduxTransitionSubscriber } from '../streets/street'
 import { getPromoteStreet, remixStreet } from '../streets/remix'
 import { resizeStreetWidth } from '../streets/width'
 import { loadSignIn } from '../users/authentication'
@@ -136,7 +135,6 @@ function onEverythingLoaded () {
 
   setIgnoreStreetChanges(false)
   setLastStreet(trimStreetData(store.getState().street))
-  initStreetReduxTransitionSubscriber()
   initializeFlagSubscribers()
   initPersistedSettingsStoreObserver()
 
